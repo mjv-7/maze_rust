@@ -31,7 +31,7 @@ pub async fn run() -> String {
         1.0,    // Zoom level (1.0 = 100%)
     )
     .await;
-    let door_img = StillImage::new(
+    let mut door_img = StillImage::new(
         "assets/door.png",
         50.0,  // width
         180.0, // height
@@ -67,8 +67,13 @@ pub async fn run() -> String {
        
         player.set_texture("assets/mario_keys.png").await;
         keys.clear();
-        //    player = player_keys.clone();
-        //         player.back();
+        }
+        let key = false;
+        let door_exists = true;
+        if key == true{
+            if player.collision(&door_img){
+                let door_exists = false;
+            }
         }
 
         draw_text("Screen 2", 20.0, 40.0, 30.0, WHITE);
@@ -77,7 +82,13 @@ pub async fn run() -> String {
             return "screen1".to_string();
         }
         img.draw();
-        door_img.draw();
+        if door_exists == true{
+            door_img.draw();
+            
+        }else {
+            door_img.clear();
+        }
+        
         keys.draw();
         player.draw();
         draw_grid(50.0, BLACK);
