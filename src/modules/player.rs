@@ -1,6 +1,7 @@
 use crate::modules::collision::check_collision;
 use crate::modules::still_image::StillImage;
 use ::macroquad::prelude::*;
+
 pub struct Player {
     view: StillImage,
     move_speed: f32,
@@ -67,34 +68,43 @@ impl Player {
     pub fn movement(&mut self) -> Vec2 {
         self.movement
     }
-    pub fn back(&mut self) {
-        self.set_position(self.old_pos.x, self.old_pos.y);
+    pub fn back_x(&mut self) {
+        self.set_x(self.old_pos.x);
     }
-    pub fn collision_x(&mut self, img_out: &StillImage) -> bool{
+    pub fn back_y(&mut self) {
+        self.set_y(self.old_pos.y);
+    }
+
+    pub fn collision_x(&mut self, img_out: &StillImage) -> bool {
         {
-           let mut collision = false;
+            let mut collision = false;
             if self.movement.x != 0.0 {
                 self.set_x(self.view.pos().x + self.movement.x);
                 if check_collision(img_out, &self.view, 1) {
                     collision = true;
-                    self.set_x(self.old_pos.x); // Undo if collision happens
+                    //self.set_x(self.old_pos.x); // Undo if collision happens
                     //println!("Collision detected on X axis!");
                 }
             }
             collision
         }
     }
-    pub fn collision_y(&mut self, img_out: &StillImage) ->bool {
-        
-            let mut collision = false;
-            if self.movement.y != 0.0 {
-                self.set_y(self.get_y() + self.movement.y);
-                if check_collision(img_out, &self.view, 1) {
-                    collision = true;
-                
-              }
+    pub fn collision_y(&mut self, img_out: &StillImage) -> bool {
+        let mut collision = false;
+        if self.movement.y != 0.0 {
+            self.set_y(self.get_y() + self.movement.y);
+            if check_collision(img_out, &self.view, 1) {
+                collision = true;
             }
-        
-       collision 
+        }
+
+        collision
     }
+    pub fn collision(&mut self, img_out: &StillImage) -> bool {
+        if check_collision(&self.view, img_out, 1) { true } else { false } // check_collision(obj1, obj2, skip_pixels)
+    }
+    pub async fn set_texture(&mut self, texture_path: &str) {
+        self.view.set_texture(texture_path).await;
+    }
+ 
 }

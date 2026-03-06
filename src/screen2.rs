@@ -1,8 +1,8 @@
 use crate::modules::grid::draw_grid;
-use crate::modules::player::{self, Player};
+use crate::modules::player::Player;
 use crate::modules::still_image::StillImage;
 use macroquad::prelude::*;
-
+use crate::modules::collision::check_collision;
 fn draw_grid_standard(grid_size: f32, color: Color) {
     let screen_width = screen_width();
     let screen_height = screen_height();
@@ -31,26 +31,54 @@ pub async fn run() -> String {
         1.0,    // Zoom level (1.0 = 100%)
     )
     .await;
-    let mut player = player::Player::new("assets/mario.png".to_string(), 200.0, 50.0, 50.0, 50.0, 50.0).await;
-
+    let door_img = StillImage::new(
+        "assets/door.png",
+        50.0,  // width
+        180.0, // height
+        150.0, // x position
+        365.0, // y position
+        true,  // Enable stretching
+        1.0,   // Zoom level (1.0 = 100%)
+    ).await;
+    let mut keys = StillImage::new(
+        "assets/keys.png",
+        20.0,  // width
+        20.0, // height
+        900.0, // x position
+        400.0, // y position
+        true,  // Enable stretching
+        1.0,   // Zoom level (1.0 = 100%)
+    ).await;
+    let mut player = Player::new("assets/mario.png".to_string(), 200.0, 50.0, 50.0, 50.0, 50.0).await;
+    // let player_keys = player::Player::new("assets/mario_keys.png".to_string(), 200.0, 50.0, 50.0, 50.0, 50.0).await;
     loop {
         clear_background(WHITE);
 
         player.key_press();
-        println!("{:?}", player.movement());
+
         // Save old position in case of collision
-        if player.collision_x(&img) {
-            player.back();
+        if player.collision_x(&img) || player.collision_x(&door_img) {
+            player.back_x();
         }
-        if player.collision_y(&img) {
-            player.back();
+        if player.collision_y(&img ) || player.collision_y(&door_img) {
+           player.back_y();
         }
+        if player.collision(&keys) {
+       
+        player.set_texture("assets/mario_keys.png").await;
+        keys.clear();
+        //    player = player_keys.clone();
+        //         player.back();
+        }
+
         draw_text("Screen 2", 20.0, 40.0, 30.0, WHITE);
 
         if is_key_pressed(KeyCode::Space) {
             return "screen1".to_string();
         }
         img.draw();
+        door_img.draw();
+        keys.draw();
         player.draw();
         draw_grid(50.0, BLACK);
         next_frame().await;

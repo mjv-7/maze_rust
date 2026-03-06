@@ -70,7 +70,6 @@ Additional functionality:
 */
 use macroquad::prelude::*;
 use macroquad::texture::Texture2D;
-
 pub struct StillImage {
     texture: Texture2D,
     x: f32,
@@ -217,6 +216,11 @@ impl StillImage {
     #[allow(unused)]
     pub fn get_filename(&self) -> &str {
         &self.filename
+    }
+
+    pub fn set_filename(&mut self, filename: String) -> &Self {
+        self.filename = filename;
+        self
     }
 
     // Get the transparency mask (bitmask)
