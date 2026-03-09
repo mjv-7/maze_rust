@@ -5,7 +5,7 @@ use crate::modules::label::Label;
 
 
 pub async fn run() -> String {
-    let mut lbl_out = Label::new("Hello World", 600.0, 50.0, 30);
+    let mut lbl_out = Label::new("Beautiful Maze Game", 600.0, 50.0, 30);
     lbl_out.with_colors(WHITE, Some(BLACK));
      let btn_text = TextButton::new(
         400.0,
@@ -33,7 +33,7 @@ pub async fn run() -> String {
     draw_text("Screen 1", 20.0, 40.0, 30.0, WHITE);
     lbl_out.draw();
     
-    if btn_text.click() || is_key_down(KeyCode::Space) {
+    if btn_text.click() || is_key_down(KeyCode::Backspace) {
         return "screen2".to_string();
     }
     

@@ -1,8 +1,8 @@
+use crate::modules::collision::check_collision;
 use crate::modules::grid::draw_grid;
 use crate::modules::player::Player;
 use crate::modules::still_image::StillImage;
 use macroquad::prelude::*;
-use crate::modules::collision::check_collision;
 fn draw_grid_standard(grid_size: f32, color: Color) {
     let screen_width = screen_width();
     let screen_height = screen_height();
@@ -31,7 +31,7 @@ pub async fn run() -> String {
         1.0,    // Zoom level (1.0 = 100%)
     )
     .await;
-    let mut door_img = StillImage::new(
+    let door_img = StillImage::new(
         "assets/door.png",
         50.0,  // width
         180.0, // height
@@ -39,41 +39,54 @@ pub async fn run() -> String {
         365.0, // y position
         true,  // Enable stretching
         1.0,   // Zoom level (1.0 = 100%)
-    ).await;
+    )
+    .await;
     let mut keys = StillImage::new(
         "assets/keys.png",
         20.0,  // width
-        20.0, // height
+        20.0,  // height
         900.0, // x position
         400.0, // y position
         true,  // Enable stretching
         1.0,   // Zoom level (1.0 = 100%)
-    ).await;
-    let mut player = Player::new("assets/mario.png".to_string(), 200.0, 50.0, 50.0, 50.0, 50.0).await;
+    )
+    .await;
+    let mut end = StillImage::new(
+        "assets/end.png",
+        100.0,  // width
+        20.0,   // height
+        890.0,  // x position
+        1040.0, // y position
+        true,   // Enable stretching
+        1.0,    // Zoom level (1.0 = 100%)
+    )
+    .await;
+    let mut door_exists = true;
+    let mut key = false;
+    let mut player = Player::new("assets/mario.png".to_string(), 350.0, 50.0, 50.0, 50.0, 50.0).await;
     // let player_keys = player::Player::new("assets/mario_keys.png".to_string(), 200.0, 50.0, 50.0, 50.0, 50.0).await;
     loop {
         clear_background(WHITE);
-
         player.key_press();
+        if player.collision(&keys) {
+            player.set_texture("assets/mario_keys.png").await;
+            key = true;
+            keys.clear();
+        }
+        if key && door_exists && player.collision(&door_img) {
+            door_exists = false;
+        }
+
+        if door_exists {
+            door_img.draw();
+        }
 
         // Save old position in case of collision
         if player.collision_x(&img) || player.collision_x(&door_img) {
             player.back_x();
         }
-        if player.collision_y(&img ) || player.collision_y(&door_img) {
-           player.back_y();
-        }
-        if player.collision(&keys) {
-       
-        player.set_texture("assets/mario_keys.png").await;
-        keys.clear();
-        }
-        let key = false;
-        let door_exists = true;
-        if key == true{
-            if player.collision(&door_img){
-                let door_exists = false;
-            }
+        if player.collision_y(&img) || player.collision_y(&door_img) {
+            player.back_y();
         }
 
         draw_text("Screen 2", 20.0, 40.0, 30.0, WHITE);
@@ -82,15 +95,9 @@ pub async fn run() -> String {
             return "screen1".to_string();
         }
         img.draw();
-        if door_exists == true{
-            door_img.draw();
-            
-        }else {
-            door_img.clear();
-        }
-        
         keys.draw();
         player.draw();
+        end.draw();
         draw_grid(50.0, BLACK);
         next_frame().await;
     }
