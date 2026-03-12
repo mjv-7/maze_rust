@@ -10,6 +10,7 @@ mod screen2;
 use crate::modules::grid::draw_grid;
 use crate::modules::still_image::StillImage;
 use macroquad::prelude::*;
+use crate::modules::scale::use_virtual_resolution;
 
 
 /// Set up window settings before the app runs

@@ -1,5 +1,6 @@
 use crate::modules::collision::check_collision;
 use crate::modules::grid::draw_grid;
+use crate::modules::scale::use_virtual_resolution;
 use crate::modules::player::Player;
 use crate::modules::still_image::StillImage;
 use macroquad::prelude::*;
@@ -61,7 +62,7 @@ pub async fn run() -> String {
         1.0,   // Zoom level (1.0 = 100%)
     )
     .await;
-    let mut end = StillImage::new(
+    let end = StillImage::new(
         "assets/end.png",
         100.0,  // width
         20.0,   // height
@@ -75,6 +76,8 @@ pub async fn run() -> String {
     let mut key = false;
     let mut player = Player::new("assets/mario.png".to_string(), 350.0, 50.0, 50.0, 50.0, 50.0).await;
     loop {
+         // Set the virtual resolution to 1024x768
+        use_virtual_resolution(1440.0, 1080.0);
         clear_background(WHITE);
         img.draw();
         keys.draw();

@@ -19,3 +19,5 @@ pub mod grid;
 pub mod collision;
 pub mod label;
 pub mod player;
+pub mod scale;
+pub mod wall;

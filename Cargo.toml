@@ -9,8 +9,9 @@ macroquad = "0.4.13"
 rayon = { version = "1.7", optional = true }
 
 [features]
-default = ["native"]
+default = ["scale"]
 native = ["rayon"]
+scale = []
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 rayon = "1.7"
