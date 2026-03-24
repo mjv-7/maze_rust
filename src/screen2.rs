@@ -42,7 +42,27 @@ pub async fn run() -> String {
         1.0,    // Zoom level (1.0 = 100%)
     )
     .await;
-    let mut door_img = StillImage::new(
+    let img_black1 = StillImage::new(
+        "assets/blackscreen.png",
+        1440.0, // width
+        1080.0, // height
+        0.0,    // x position
+        0.0,    // y position
+        true,   // Enable stretching
+        1.0,    // Zoom level (1.0 = 100%)
+    )
+    .await;
+    let img_black2 = StillImage::new(
+        "assets/blackscreen.png",
+        1440.0, // width
+        1080.0, // height
+        0.0,    // x position
+        0.0,    // y position
+        true,   // Enable stretching
+        1.0,    // Zoom level (1.0 = 100%)
+    )
+    .await;
+    let mut img_door = StillImage::new(
         "assets/door.png",
         50.0,  // width
         180.0, // height
@@ -85,7 +105,7 @@ pub async fn run() -> String {
         end.draw();
         wall.draw();
         if door_exists {
-            door_img.draw();
+            img_door.draw();
         }
         draw_grid(50.0, BLACK);
         player.key_press();
@@ -110,11 +130,11 @@ pub async fn run() -> String {
             return "screen1".to_string();
         }
         if door_exists {
-            if player.collision(&door_img) {
+            if player.collision(&img_door) {
                 if key {
                     door_exists = false;
                     println!("door destroyed");
-                    door_img.clear();
+                    img_door.clear();
                     player.set_texture("assets/mario.png").await;
                 } else {
                     player.back_x();
