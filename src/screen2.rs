@@ -3,6 +3,7 @@ use crate::modules::grid::draw_grid;
 use crate::modules::scale::use_virtual_resolution;
 use crate::modules::player::Player;
 use crate::modules::still_image::StillImage;
+use crate::modules::wall::Wall;
 use macroquad::prelude::*;
 fn draw_grid_standard(grid_size: f32, color: Color) {
     let screen_width = screen_width();
@@ -95,6 +96,9 @@ pub async fn run() -> String {
     let mut door_exists = true;
     let mut key = false;
     let mut player = Player::new("assets/mario.png".to_string(), 350.0, 50.0, 50.0, 50.0, 50.0).await;
+
+
+    let mut wall_move_amount =1.0;
     loop {
          // Set the virtual resolution to 1024x768
         use_virtual_resolution(1440.0, 1080.0);
@@ -107,6 +111,7 @@ pub async fn run() -> String {
         if door_exists {
             img_door.draw();
         }
+        
         draw_grid(50.0, BLACK);
         player.key_press();
         if player.collision(&keys) {
@@ -118,7 +123,7 @@ pub async fn run() -> String {
         // println!("key: {}", key);
         //println!("door_exists: {}", door_exists);
         // println!("player.collision(&door_img): {}", player.collision(&door_img));
-      
+        wall.set_x(wall.get_x() + wall_move_amount);
         // Save old position in case of collision
         if player.collision_x(&img) {
             player.back_x();
@@ -141,6 +146,9 @@ pub async fn run() -> String {
                     player.back_y();
                 }
             }
+        }
+        if check_collision(&img, &wall, 1){
+wall_move_amount = -wall_move_amount;
         }
         draw_text("Screen 2", 20.0, 40.0, 30.0, WHITE);
 
