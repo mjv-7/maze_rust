@@ -3,24 +3,7 @@ use crate::modules::grid::draw_grid;
 use crate::modules::scale::use_virtual_resolution;
 use crate::modules::player::Player;
 use crate::modules::still_image::StillImage;
-use crate::modules::wall::Wall;
 use macroquad::prelude::*;
-fn draw_grid_standard(grid_size: f32, color: Color) {
-    let screen_width = screen_width();
-    let screen_height = screen_height();
-
-    // Draw vertical lines and labels
-    for x in (0..screen_width as i32).step_by(grid_size as usize) {
-        draw_line(x as f32, 0.0, x as f32, screen_height, 1.0, color);
-        draw_text(&format!("{}", x), x as f32 + 2.0, 12.0, 16.0, color);
-    }
-
-    // Draw horizontal lines and labels
-    for y in (0..screen_height as i32).step_by(grid_size as usize) {
-        draw_line(0.0, y as f32, screen_width, y as f32, 1.0, color);
-        draw_text(&format!("{}", y), 2.0, y as f32 + 12.0, 16.0, color);
-    }
-}
 
 pub async fn run() -> String {
     let mut wall = StillImage::new(
@@ -35,26 +18,6 @@ pub async fn run() -> String {
     .await;
     let img = StillImage::new(
         "assets/maze.png",
-        1440.0, // width
-        1080.0, // height
-        0.0,    // x position
-        0.0,    // y position
-        true,   // Enable stretching
-        1.0,    // Zoom level (1.0 = 100%)
-    )
-    .await;
-    let img_black1 = StillImage::new(
-        "assets/blackscreen.png",
-        1440.0, // width
-        1080.0, // height
-        0.0,    // x position
-        0.0,    // y position
-        true,   // Enable stretching
-        1.0,    // Zoom level (1.0 = 100%)
-    )
-    .await;
-    let img_black2 = StillImage::new(
-        "assets/blackscreen.png",
         1440.0, // width
         1080.0, // height
         0.0,    // x position
@@ -129,6 +92,10 @@ pub async fn run() -> String {
             player.back_x();
         }
         if player.collision_y(&img) {
+            player.back_y();
+        }
+        if player.collision(&wall) {
+            player.back_x();
             player.back_y();
         }
         if player.collision(&end) {
