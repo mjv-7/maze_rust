@@ -63,7 +63,9 @@ impl Collidable for StillImage {
     fn get_angle(&self) -> f32 {
         self.get_angle()
     }
+    
 }
+
 /* 
 use crate::modules::animated_image::AnimatedImage;
 // Implement for AnimatedImage

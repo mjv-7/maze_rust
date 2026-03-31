@@ -7,16 +7,16 @@ Program Details: A simple maze game with keys to collect that can help you to op
 mod modules;
 mod screen1;
 mod screen2;
+mod screen3;
 use crate::modules::grid::draw_grid;
-use crate::modules::still_image::StillImage;
 use macroquad::prelude::*;
-use crate::modules::scale::use_virtual_resolution;
+
 
 
 /// Set up window settings before the app runs
 fn window_conf() -> Conf {
     Conf {
-        window_title: "rust_gui_review".to_string(),
+        window_title: "maze_game".to_string(),
         window_width: 1440,
         window_height: 1080,
         fullscreen: false,
@@ -31,15 +31,6 @@ fn window_conf() -> Conf {
 async fn main() {
     
     
-    let img = StillImage::new(
-    "assets/download.png",
-    1440.0,  // width
-    1080.0,  // height
-    0.0,  // x position
-    0.0,   // y position
-    true,   // Enable stretching
-    1.0     // Zoom level (1.0 = 100%)
-).await;
     let mut current_screen = "screen1".to_string();
     let mut last_switch = get_time() - 0.02;
     loop {
@@ -47,6 +38,7 @@ async fn main() {
             current_screen = match current_screen.as_str() {
                 "screen1" => screen1::run().await,
                 "screen2" => screen2::run().await,
+                "screen3" => screen3::run().await,
                 _ => break,
             };
             last_switch = get_time();
@@ -56,8 +48,6 @@ async fn main() {
     
     loop {
         clear_background(RED);
-
-        img.draw();
         draw_grid(50.0, BROWN);
         next_frame().await;
     }

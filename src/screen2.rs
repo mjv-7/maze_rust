@@ -16,7 +16,7 @@ pub async fn run() -> String {
         1.0,   // Zoom level (1.0 = 100%)
     )
     .await;
-    let img = StillImage::new(
+    let img_maze = StillImage::new(
         "assets/maze.png",
         1440.0, // width
         1080.0, // height
@@ -66,7 +66,7 @@ pub async fn run() -> String {
          // Set the virtual resolution to 1024x768
         use_virtual_resolution(1440.0, 1080.0);
         clear_background(WHITE);
-        img.draw();
+        img_maze.draw();
         keys.draw();
         player.draw();
         end.draw();
@@ -88,10 +88,10 @@ pub async fn run() -> String {
         // println!("player.collision(&door_img): {}", player.collision(&door_img));
         wall.set_x(wall.get_x() + wall_move_amount);
         // Save old position in case of collision
-        if player.collision_x(&img) {
+        if player.collision_x(&img_maze) {
             player.back_x();
         }
-        if player.collision_y(&img) {
+        if player.collision_y(&img_maze) {
             player.back_y();
         }
         if player.collision(&wall) {
@@ -99,7 +99,7 @@ pub async fn run() -> String {
             player.back_y();
         }
         if player.collision(&end) {
-            return "screen1".to_string();
+            return "screen3".to_string();
         }
         if door_exists {
             if player.collision(&img_door) {
@@ -114,7 +114,7 @@ pub async fn run() -> String {
                 }
             }
         }
-        if check_collision(&img, &wall, 1){
+        if check_collision(&img_maze, &wall, 1){
 wall_move_amount = -wall_move_amount;
         }
         draw_text("Screen 2", 20.0, 40.0, 30.0, WHITE);

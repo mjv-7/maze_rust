@@ -38,6 +38,9 @@ pub async fn run() -> String {
     if btn_text.click() || is_key_down(KeyCode::Backspace) {
         return "screen2".to_string();
     }
+    if is_key_down(KeyCode::Enter) {
+        return "screen3".to_string();
+    }
     
     if btn_exit.click() {
         std::process::exit(0);
