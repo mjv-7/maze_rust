@@ -1,3 +1,10 @@
+/*
+By: Mujibullah
+Date: 2026-02-11
+Program Details: A simple maze game with keys to collect that can help you to open a door, and there is a wall that moves automatically.
+Screen 1: Intro screen, goes to screen 2
+*/
+
 use macroquad::prelude::*;
 use crate::modules::text_button::TextButton;
 use crate::modules::grid::{draw_grid};
@@ -7,21 +14,21 @@ use crate::modules::scale::use_virtual_resolution;
 
 pub async fn run() -> String {
     use_virtual_resolution(1440.0, 1080.0);
-    let mut lbl_out = Label::new("Beautiful Maze Game", 600.0, 50.0, 30);
+    let mut lbl_out = Label::new("Beautiful Maze Game", 550.0, 50.0, 30);
     lbl_out.with_colors(WHITE, Some(BLACK));
      let btn_text = TextButton::new(
-        400.0,
-        200.0,
+        750.0,
+        700.0,
         200.0,
         60.0,
-        "Click Me",
+        "Click To Play!",
         BLACK,
         GREEN,
         30
      );
      let btn_exit = TextButton::new(
-        100.0,
-        200.0,
+        350.0,
+        700.0,
         200.0,
         60.0,
         "Exit",
