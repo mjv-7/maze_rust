@@ -1,3 +1,8 @@
+/*
+By: Mujibullah
+Date: 2026-02-11
+Module Details: Player module for handling player movement and collision
+ */
 use crate::modules::collision::check_collision;
 use crate::modules::still_image::StillImage;
 use ::macroquad::prelude::*;

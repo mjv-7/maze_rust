@@ -10,6 +10,7 @@ use crate::modules::grid::draw_grid;
 use crate::modules::scale::use_virtual_resolution;
 use crate::modules::player::Player;
 use crate::modules::still_image::StillImage;
+use crate::modules::text_button::TextButton;
 use macroquad::prelude::*;
 
 pub async fn run() -> String {
@@ -63,10 +64,20 @@ pub async fn run() -> String {
         1.0,    // Zoom level (1.0 = 100%)
     )
     .await;
+    let btn_back = TextButton::new(
+        1380.0,
+        0.0,
+        50.0,
+        50.0,
+        "Back",
+        BLACK,
+        GREEN,
+        30
+    );
     let mut door_exists = true;
     let mut key = false;
     let mut player = Player::new("assets/mario.png".to_string(), 350.0, 50.0, 50.0, 50.0, 50.0).await;
-
+    
 
     let mut wall_move_amount =1.0;
     loop {
@@ -123,6 +134,9 @@ pub async fn run() -> String {
         }
         if check_collision(&img_maze, &wall, 1){
 wall_move_amount = -wall_move_amount;
+        }
+        if btn_back.click() {
+            return "screen1".to_string();
         }
         draw_text("Screen 2", 20.0, 40.0, 30.0, WHITE);
 
