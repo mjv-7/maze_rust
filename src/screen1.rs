@@ -13,7 +13,7 @@ use crate::modules::scale::use_virtual_resolution;
 
 
 pub async fn run() -> String {
-    use_virtual_resolution(1440.0, 1080.0);
+    use_virtual_resolution(1280.0, 960.0);
     let mut lbl_out = Label::new("Beautiful Maze Game", 550.0, 50.0, 30);
     lbl_out.with_colors(WHITE, Some(BLACK));
      let btn_text = TextButton::new(
@@ -44,9 +44,6 @@ pub async fn run() -> String {
     
     if btn_text.click() || is_key_down(KeyCode::Backspace) {
         return "screen2".to_string();
-    }
-    if is_key_down(KeyCode::Enter) {
-        return "screen3".to_string();
     }
     
     if btn_exit.click() {
